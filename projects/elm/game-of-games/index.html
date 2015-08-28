@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html><head><meta charset="UTF-8"><title>Main</title><style>html,head,body { padding:0; margin:0; overflow:hidden ;}
+<html><head><meta charset="UTF-8"><title>Main</title><style>html,head,body { padding:0; margin:0; overflow: hidden; }
 body { font-family: calibri, helvetica, arial, sans-serif; }</style><script type="text/javascript">var Elm = Elm || { Native: {} };Elm.Array = Elm.Array || {};
 Elm.Array.make = function (_elm) {
    "use strict";
@@ -3454,7 +3454,7 @@ Elm.Main.make = function (_elm) {
                case "Nothing":
                return $Array.empty;}
             _U.badCase($moduleName,
-            "between lines 195 and 198");
+            "between lines 200 and 203");
          }();
          var element = function () {
             var _v2 = A2($Array.get,
@@ -3464,7 +3464,7 @@ Elm.Main.make = function (_elm) {
             {case "Just": return _v2._0;
                case "Nothing": return 0;}
             _U.badCase($moduleName,
-            "between lines 198 and 201");
+            "between lines 203 and 206");
          }();
          return A3($Array.set,
          j,
@@ -3485,7 +3485,7 @@ Elm.Main.make = function (_elm) {
             case "Nothing":
             return $Maybe.Nothing;}
          _U.badCase($moduleName,
-         "between lines 188 and 190");
+         "between lines 193 and 195");
       }();
    });
    var livingNeighbours = F3(function (array,
@@ -3498,7 +3498,7 @@ Elm.Main.make = function (_elm) {
                {case "Just": return x._0;
                   case "Nothing": return 0;}
                _U.badCase($moduleName,
-               "between lines 177 and 180");
+               "between lines 182 and 185");
             }();
          };
          var guardedGet = F2(function (di,
@@ -3550,7 +3550,7 @@ Elm.Main.make = function (_elm) {
                  neighbours);
                case "Nothing": return 0;}
             _U.badCase($moduleName,
-            "between lines 168 and 170");
+            "between lines 173 and 175");
          }();
       }();
    });
@@ -3569,7 +3569,7 @@ Elm.Main.make = function (_elm) {
                  2);
               });}
          _U.badCase($moduleName,
-         "on line 152, column 23 to 58");
+         "on line 157, column 23 to 58");
       }();
    });
    var arrayUpdate = F2(function (array,
@@ -3601,6 +3601,31 @@ Elm.Main.make = function (_elm) {
                          ,model.clicks + 1]],
       model);
    };
+   var resetModel = function (model) {
+      return function () {
+         var resetDebug = function (model) {
+            return _U.replace([["debug"
+                               ,""]],
+            model);
+         };
+         var resetAutoplay = function (model) {
+            return _U.replace([["autoplay"
+                               ,false]],
+            model);
+         };
+         var resetClick = function (model) {
+            return _U.replace([["clicks"
+                               ,0]],
+            model);
+         };
+         var resetBoard = function (model) {
+            return _U.replace([["board"
+                               ,model.initBoard]],
+            model);
+         };
+         return resetBoard(resetClick(model));
+      }();
+   };
    var rectSize = 10;
    var toSquare = F2(function (x,
    y) {
@@ -3621,37 +3646,13 @@ Elm.Main.make = function (_elm) {
    $Boards.noahsLessBeautifulGithubAvatar)(A2($Boards.emptyBoard,
    boardWidth,
    boardHeight)));
-   var resetModel = function (model) {
-      return function () {
-         var resetDebug = function (model) {
-            return _U.replace([["debug"
-                               ,""]],
-            model);
-         };
-         var resetAutoplay = function (model) {
-            return _U.replace([["autoplay"
-                               ,false]],
-            model);
-         };
-         var resetClick = function (model) {
-            return _U.replace([["clicks"
-                               ,0]],
-            model);
-         };
-         var resetBoard = function (model) {
-            return _U.replace([["board"
-                               ,board$]],
-            model);
-         };
-         return resetBoard(resetClick(model));
-      }();
-   };
    var model = {_: {}
                ,autoplay: false
                ,board: board$
                ,clicks: 0
                ,debug: ""
                ,height: collageHeight
+               ,initBoard: board$
                ,width: collageWidth};
    var drawRect = F3(function (x,
    y,
@@ -3681,7 +3682,7 @@ Elm.Main.make = function (_elm) {
                     $Basics.toFloat(j),
                     _v14._1);}
                _U.badCase($moduleName,
-               "on line 128, column 18 to 53");
+               "on line 133, column 18 to 53");
             }();
          };
          return $List.map(rekt)($List.filter(function (_v18) {
@@ -3690,7 +3691,7 @@ Elm.Main.make = function (_elm) {
                {case "_Tuple2":
                   return _U.cmp(_v18._1,0) > 0;}
                _U.badCase($moduleName,
-               "on line 131, column 32 to 37");
+               "on line 136, column 32 to 37");
             }();
          })($Array.toIndexedList(rowArray)));
       }();
@@ -3713,22 +3714,25 @@ Elm.Main.make = function (_elm) {
    var view = function (model) {
       return draw(model);
    };
-   var Model = F6(function (a,
+   var Model = F7(function (a,
    b,
    c,
    d,
    e,
-   f) {
+   f,
+   g) {
       return {_: {}
-             ,autoplay: c
-             ,board: a
-             ,clicks: b
-             ,debug: d
-             ,height: f
-             ,width: e};
+             ,autoplay: d
+             ,board: b
+             ,clicks: c
+             ,debug: e
+             ,height: g
+             ,initBoard: a
+             ,width: f};
    });
    var Noop = {ctor: "Noop"};
    var Reset = {ctor: "Reset"};
+   var SaveBoardAsInit = {ctor: "SaveBoardAsInit"};
    var ToggleAutoplay = {ctor: "ToggleAutoplay"};
    var TickerStep = {ctor: "TickerStep"};
    var WindowResize = function (a) {
@@ -3755,6 +3759,10 @@ Elm.Main.make = function (_elm) {
               model)) : model;
             case "Reset":
             return resetModel(model);
+            case "SaveBoardAsInit":
+            return _U.replace([["initBoard"
+                               ,model.board]],
+              model);
             case "TickerStep":
             return model.autoplay ? A2(updateModel,
               NextStep(true),
@@ -3783,7 +3791,7 @@ Elm.Main.make = function (_elm) {
               _v26._0,
               _v26._1) : Noop;}
          _U.badCase($moduleName,
-         "on line 88, column 45 to 84");
+         "on line 92, column 45 to 84");
       }();
    }),
    $Mouse.isDown,
@@ -3800,7 +3808,7 @@ Elm.Main.make = function (_elm) {
                                                                       ,_0: _v30._0
                                                                       ,_1: _v30._1});}
                                                _U.badCase($moduleName,
-                                               "on line 99, column 32 to 50");
+                                               "on line 103, column 32 to 50");
                                             }();
                                          },
                                          $Window.dimensions)
@@ -3817,7 +3825,12 @@ Elm.Main.make = function (_elm) {
                                             return function () {
                                                return Reset;
                                             }();
-                                         })($Keyboard.isDown(82))])));
+                                         })($Keyboard.isDown(82))
+                                         ,$Signal.map(function (_v38) {
+                                            return function () {
+                                               return SaveBoardAsInit;
+                                            }();
+                                         })($Keyboard.isDown(83))])));
    var main = A2($Signal.map,
    view,
    model$);
@@ -3827,6 +3840,7 @@ Elm.Main.make = function (_elm) {
                       ,WindowResize: WindowResize
                       ,TickerStep: TickerStep
                       ,ToggleAutoplay: ToggleAutoplay
+                      ,SaveBoardAsInit: SaveBoardAsInit
                       ,Reset: Reset
                       ,Noop: Noop
                       ,Model: Model
