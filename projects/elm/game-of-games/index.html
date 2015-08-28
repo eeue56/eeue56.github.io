@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html><head><meta charset="UTF-8"><title>Main</title><style>html,head,body { padding:0; margin:0; overflow: hidden; }
+<html><head><meta charset="UTF-8"><title>Main</title><style>html,head,body { padding:0; margin:0; }
 body { font-family: calibri, helvetica, arial, sans-serif; }</style><script type="text/javascript">var Elm = Elm || { Native: {} };Elm.Array = Elm.Array || {};
 Elm.Array.make = function (_elm) {
    "use strict";
@@ -2014,6 +2014,314 @@ Elm.Dict.make = function (_elm) {
                       ,toList: toList
                       ,fromList: fromList};
    return _elm.Dict.values;
+};Elm.Drawing = Elm.Drawing || {};
+Elm.Drawing.make = function (_elm) {
+   "use strict";
+   _elm.Drawing = _elm.Drawing || {};
+   if (_elm.Drawing.values)
+   return _elm.Drawing.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Drawing",
+   $Array = Elm.Array.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Color = Elm.Color.make(_elm),
+   $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Model = Elm.Model.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var background = F2(function (width,
+   height) {
+      return $Graphics$Collage.filled($Color.black)(A2($Graphics$Collage.rect,
+      $Basics.toFloat(width),
+      $Basics.toFloat(height)));
+   });
+   var drawRect = F4(function (model,
+   x,
+   y,
+   value) {
+      return function () {
+         var originY = $Basics.toFloat(model.height) / 2 - model.rectSize / 2;
+         var originX = model.rectSize / 2 - $Basics.toFloat(model.width) / 2;
+         return $Graphics$Collage.move({ctor: "_Tuple2"
+                                       ,_0: originX + model.rectSize * x
+                                       ,_1: originY - model.rectSize * y})($Graphics$Collage.filled(A3($Color.rgb,
+         value * 255,
+         0,
+         0))(A2($Graphics$Collage.rect,
+         model.rectSize,
+         model.rectSize)));
+      }();
+   });
+   var drawRow = F3(function (model,
+   j,
+   rowArray) {
+      return function () {
+         var rekt = function (_v0) {
+            return function () {
+               switch (_v0.ctor)
+               {case "_Tuple2":
+                  return A4(drawRect,
+                    model,
+                    $Basics.toFloat(_v0._0),
+                    $Basics.toFloat(j),
+                    _v0._1);}
+               _U.badCase($moduleName,
+               "on line 26, column 20 to 62");
+            }();
+         };
+         return $List.map(rekt)($List.filter(function (_v4) {
+            return function () {
+               switch (_v4.ctor)
+               {case "_Tuple2":
+                  return _U.cmp(_v4._1,0) > 0;}
+               _U.badCase($moduleName,
+               "on line 29, column 32 to 37");
+            }();
+         })($Array.toIndexedList(rowArray)));
+      }();
+   });
+   var drawArray = function (model) {
+      return $List.concat($Array.toList(A2($Array.indexedMap,
+      drawRow(model),
+      model.board)));
+   };
+   var draw = function (model) {
+      return A2($Graphics$Collage.collage,
+      model.width,
+      model.height)(A2($List._op["::"],
+      A2(background,
+      model.width,
+      model.height),
+      drawArray(model)));
+   };
+   var collageHeight = 4000;
+   var collageWidth = 4000;
+   _elm.Drawing.values = {_op: _op
+                         ,collageWidth: collageWidth
+                         ,collageHeight: collageHeight
+                         ,drawRect: drawRect
+                         ,drawRow: drawRow
+                         ,drawArray: drawArray
+                         ,background: background
+                         ,draw: draw};
+   return _elm.Drawing.values;
+};Elm.GameLogic = Elm.GameLogic || {};
+Elm.GameLogic.make = function (_elm) {
+   "use strict";
+   _elm.GameLogic = _elm.GameLogic || {};
+   if (_elm.GameLogic.values)
+   return _elm.GameLogic.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "GameLogic",
+   $Array = Elm.Array.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Model = Elm.Model.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var update = F4(function (m,
+   i,
+   j,
+   f) {
+      return function () {
+         var row = function () {
+            var _v0 = A2($Array.get,j,m);
+            switch (_v0.ctor)
+            {case "Just": return _v0._0;
+               case "Nothing":
+               return $Array.empty;}
+            _U.badCase($moduleName,
+            "between lines 61 and 64");
+         }();
+         var element = function () {
+            var _v2 = A2($Array.get,
+            i,
+            row);
+            switch (_v2.ctor)
+            {case "Just": return _v2._0;
+               case "Nothing": return 0;}
+            _U.badCase($moduleName,
+            "between lines 64 and 67");
+         }();
+         return A3($Array.set,
+         j,
+         A3($Array.set,i,f(element),row),
+         m);
+      }();
+   });
+   var matrixGet = F3(function (array,
+   i,
+   j) {
+      return function () {
+         var _v4 = A2($Array.get,
+         j,
+         array);
+         switch (_v4.ctor)
+         {case "Just":
+            return A2($Array.get,i,_v4._0);
+            case "Nothing":
+            return $Maybe.Nothing;}
+         _U.badCase($moduleName,
+         "between lines 54 and 56");
+      }();
+   });
+   var livingNeighbours = F3(function (array,
+   i,
+   j) {
+      return function () {
+         var binSwap = function (x) {
+            return function () {
+               switch (x.ctor)
+               {case "Just": return x._0;
+                  case "Nothing": return 0;}
+               _U.badCase($moduleName,
+               "between lines 43 and 46");
+            }();
+         };
+         var guardedGet = F2(function (di,
+         dj) {
+            return !_U.eq({ctor: "_Tuple2"
+                          ,_0: di
+                          ,_1: dj},
+            {ctor: "_Tuple2"
+            ,_0: 0
+            ,_1: 0}) ? A3(matrixGet,
+            array,
+            i + di,
+            j + dj) : $Maybe.Nothing;
+         });
+         return $List.sum($List.map(binSwap)($List.concat(A2($List.map,
+         function (x) {
+            return A2($List.map,
+            guardedGet(x),
+            _L.range(-1,1));
+         },
+         _L.range(-1,1)))));
+      }();
+   });
+   var gameRule = F3(function (array,
+   i,
+   j) {
+      return function () {
+         var populate = F2(function (x,
+         neighbours) {
+            return _U.cmp(neighbours,
+            2) < 0 ? 0 : _U.cmp(neighbours,
+            3) > 0 ? 0 : _U.eq(x,
+            0) ? _U.eq(neighbours,
+            3) ? 1 : 0 : 1;
+         });
+         var neighbours = A3(livingNeighbours,
+         array,
+         i,
+         j);
+         return function () {
+            var _v8 = A3(matrixGet,
+            array,
+            i,
+            j);
+            switch (_v8.ctor)
+            {case "Just":
+               return A2(populate,
+                 _v8._0,
+                 neighbours);
+               case "Nothing": return 0;}
+            _U.badCase($moduleName,
+            "between lines 34 and 36");
+         }();
+      }();
+   });
+   var off = F2(function (board,
+   _v10) {
+      return function () {
+         switch (_v10.ctor)
+         {case "_Tuple2":
+            return A4(update,
+              board,
+              _v10._0,
+              _v10._1,
+              function (_v14) {
+                 return function () {
+                    return 0;
+                 }();
+              });}
+         _U.badCase($moduleName,
+         "on line 17, column 20 to 45");
+      }();
+   });
+   var on = F2(function (board,
+   _v16) {
+      return function () {
+         switch (_v16.ctor)
+         {case "_Tuple2":
+            return A4(update,
+              board,
+              _v16._0,
+              _v16._1,
+              function (_v20) {
+                 return function () {
+                    return 1;
+                 }();
+              });}
+         _U.badCase($moduleName,
+         "on line 14, column 19 to 44");
+      }();
+   });
+   var toggle = F2(function (board,
+   _v22) {
+      return function () {
+         switch (_v22.ctor)
+         {case "_Tuple2":
+            return A4(update,
+              board,
+              _v22._0,
+              _v22._1,
+              function (x) {
+                 return A2($Basics._op["%"],
+                 x + 1,
+                 2);
+              });}
+         _U.badCase($moduleName,
+         "on line 11, column 23 to 58");
+      }();
+   });
+   var arrayUpdate = F2(function (array,
+   f) {
+      return A2($Array.indexedMap,
+      F2(function (y,n) {
+         return A2($Array.indexedMap,
+         F2(function (x,m) {
+            return A3(f,array,x,y);
+         }),
+         n);
+      }),
+      array);
+   });
+   var gameStep = function (array) {
+      return A2(arrayUpdate,
+      array,
+      gameRule);
+   };
+   _elm.GameLogic.values = {_op: _op
+                           ,arrayUpdate: arrayUpdate
+                           ,toggle: toggle
+                           ,on: on
+                           ,off: off
+                           ,gameStep: gameStep
+                           ,gameRule: gameRule
+                           ,livingNeighbours: livingNeighbours
+                           ,matrixGet: matrixGet
+                           ,update: update};
+   return _elm.GameLogic.values;
 };Elm.Graphics = Elm.Graphics || {};
 Elm.Graphics.Collage = Elm.Graphics.Collage || {};
 Elm.Graphics.Collage.make = function (_elm) {
@@ -3428,211 +3736,21 @@ Elm.Main.make = function (_elm) {
    _U = _N.Utils.make(_elm),
    _L = _N.List.make(_elm),
    $moduleName = "Main",
-   $Array = Elm.Array.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Boards = Elm.Boards.make(_elm),
-   $Color = Elm.Color.make(_elm),
-   $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
-   $Graphics$Element = Elm.Graphics.Element.make(_elm),
+   $Drawing = Elm.Drawing.make(_elm),
    $Keyboard = Elm.Keyboard.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
-   $Mouse = Elm.Mouse.make(_elm),
+   $Model = Elm.Model.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $Time = Elm.Time.make(_elm),
+   $Update = Elm.Update.make(_elm),
    $Window = Elm.Window.make(_elm);
-   var update = F4(function (m,
-   i,
-   j,
-   f) {
-      return function () {
-         var row = function () {
-            var _v0 = A2($Array.get,j,m);
-            switch (_v0.ctor)
-            {case "Just": return _v0._0;
-               case "Nothing":
-               return $Array.empty;}
-            _U.badCase($moduleName,
-            "between lines 200 and 203");
-         }();
-         var element = function () {
-            var _v2 = A2($Array.get,
-            i,
-            row);
-            switch (_v2.ctor)
-            {case "Just": return _v2._0;
-               case "Nothing": return 0;}
-            _U.badCase($moduleName,
-            "between lines 203 and 206");
-         }();
-         return A3($Array.set,
-         j,
-         A3($Array.set,i,f(element),row),
-         m);
-      }();
-   });
-   var matrixGet = F3(function (array,
-   i,
-   j) {
-      return function () {
-         var _v4 = A2($Array.get,
-         j,
-         array);
-         switch (_v4.ctor)
-         {case "Just":
-            return A2($Array.get,i,_v4._0);
-            case "Nothing":
-            return $Maybe.Nothing;}
-         _U.badCase($moduleName,
-         "between lines 193 and 195");
-      }();
-   });
-   var livingNeighbours = F3(function (array,
-   i,
-   j) {
-      return function () {
-         var binSwap = function (x) {
-            return function () {
-               switch (x.ctor)
-               {case "Just": return x._0;
-                  case "Nothing": return 0;}
-               _U.badCase($moduleName,
-               "between lines 182 and 185");
-            }();
-         };
-         var guardedGet = F2(function (di,
-         dj) {
-            return !_U.eq({ctor: "_Tuple2"
-                          ,_0: di
-                          ,_1: dj},
-            {ctor: "_Tuple2"
-            ,_0: 0
-            ,_1: 0}) ? A3(matrixGet,
-            array,
-            i + di,
-            j + dj) : $Maybe.Nothing;
-         });
-         return $List.sum($List.map(binSwap)($List.concat(A2($List.map,
-         function (x) {
-            return A2($List.map,
-            guardedGet(x),
-            _L.range(-1,1));
-         },
-         _L.range(-1,1)))));
-      }();
-   });
-   var gameRule = F3(function (array,
-   i,
-   j) {
-      return function () {
-         var populate = F2(function (x,
-         neighbours) {
-            return _U.cmp(neighbours,
-            2) < 0 ? 0 : _U.cmp(neighbours,
-            3) > 0 ? 0 : _U.eq(x,
-            0) ? _U.eq(neighbours,
-            3) ? 1 : 0 : 1;
-         });
-         var neighbours = A3(livingNeighbours,
-         array,
-         i,
-         j);
-         return function () {
-            var _v8 = A3(matrixGet,
-            array,
-            i,
-            j);
-            switch (_v8.ctor)
-            {case "Just":
-               return A2(populate,
-                 _v8._0,
-                 neighbours);
-               case "Nothing": return 0;}
-            _U.badCase($moduleName,
-            "between lines 173 and 175");
-         }();
-      }();
-   });
-   var toggle = F2(function (board,
-   _v10) {
-      return function () {
-         switch (_v10.ctor)
-         {case "_Tuple2":
-            return A4(update,
-              board,
-              _v10._0,
-              _v10._1,
-              function (x) {
-                 return A2($Basics._op["%"],
-                 x + 1,
-                 2);
-              });}
-         _U.badCase($moduleName,
-         "on line 157, column 23 to 58");
-      }();
-   });
-   var arrayUpdate = F2(function (array,
-   f) {
-      return A2($Array.indexedMap,
-      F2(function (y,n) {
-         return A2($Array.indexedMap,
-         F2(function (x,m) {
-            return A3(f,array,x,y);
-         }),
-         n);
-      }),
-      array);
-   });
-   var gameStep = function (array) {
-      return A2(arrayUpdate,
-      array,
-      gameRule);
-   };
-   var metronome = $Time.every($Time.second / 2);
-   var addDebug = F2(function (msg,
-   model) {
-      return _U.replace([["debug"
-                         ,msg]],
-      model);
-   });
-   var addClick = function (model) {
-      return _U.replace([["clicks"
-                         ,model.clicks + 1]],
-      model);
-   };
-   var resetModel = function (model) {
-      return function () {
-         var resetDebug = function (model) {
-            return _U.replace([["debug"
-                               ,""]],
-            model);
-         };
-         var resetAutoplay = function (model) {
-            return _U.replace([["autoplay"
-                               ,false]],
-            model);
-         };
-         var resetClick = function (model) {
-            return _U.replace([["clicks"
-                               ,0]],
-            model);
-         };
-         var resetBoard = function (model) {
-            return _U.replace([["board"
-                               ,model.initBoard]],
-            model);
-         };
-         return resetBoard(resetClick(model));
-      }();
+   var view = function (model) {
+      return $Drawing.draw(model);
    };
    var rectSize = 10;
-   var toSquare = F2(function (x,
-   y) {
-      return {ctor: "_Tuple2"
-             ,_0: x / rectSize | 0
-             ,_1: y / rectSize | 0};
-   });
    var collageHeight = 1500;
    var boardHeight = collageHeight / rectSize | 0;
    var collageWidth = 2000;
@@ -3653,197 +3771,47 @@ Elm.Main.make = function (_elm) {
                ,debug: ""
                ,height: collageHeight
                ,initBoard: board$
+               ,rectSize: rectSize
                ,width: collageWidth};
-   var drawRect = F3(function (x,
-   y,
-   value) {
-      return function () {
-         var originY = collageHeight / 2 - rectSize / 2;
-         var originX = rectSize / 2 - collageWidth / 2;
-         return $Graphics$Collage.move({ctor: "_Tuple2"
-                                       ,_0: originX + rectSize * x
-                                       ,_1: originY - rectSize * y})($Graphics$Collage.filled(A3($Color.rgb,
-         value * 255,
-         0,
-         0))(A2($Graphics$Collage.rect,
-         rectSize,
-         rectSize)));
-      }();
-   });
-   var drawRow = F2(function (j,
-   rowArray) {
-      return function () {
-         var rekt = function (_v14) {
-            return function () {
-               switch (_v14.ctor)
-               {case "_Tuple2":
-                  return A3(drawRect,
-                    $Basics.toFloat(_v14._0),
-                    $Basics.toFloat(j),
-                    _v14._1);}
-               _U.badCase($moduleName,
-               "on line 133, column 18 to 53");
-            }();
-         };
-         return $List.map(rekt)($List.filter(function (_v18) {
-            return function () {
-               switch (_v18.ctor)
-               {case "_Tuple2":
-                  return _U.cmp(_v18._1,0) > 0;}
-               _U.badCase($moduleName,
-               "on line 136, column 32 to 37");
-            }();
-         })($Array.toIndexedList(rowArray)));
-      }();
-   });
-   var drawArray = function (array) {
-      return $List.concat($Array.toList(A2($Array.indexedMap,
-      drawRow,
-      array)));
-   };
-   var background = $Graphics$Collage.filled($Color.black)(A2($Graphics$Collage.rect,
-   collageWidth,
-   collageHeight));
-   var draw = function (model) {
-      return A2($Graphics$Collage.collage,
-      model.width,
-      model.height)(A2($List._op["::"],
-      background,
-      drawArray(model.board)));
-   };
-   var view = function (model) {
-      return draw(model);
-   };
-   var Model = F7(function (a,
-   b,
-   c,
-   d,
-   e,
-   f,
-   g) {
-      return {_: {}
-             ,autoplay: d
-             ,board: b
-             ,clicks: c
-             ,debug: e
-             ,height: g
-             ,initBoard: a
-             ,width: f};
-   });
-   var Noop = {ctor: "Noop"};
-   var Reset = {ctor: "Reset"};
-   var SaveBoardAsInit = {ctor: "SaveBoardAsInit"};
-   var ToggleAutoplay = {ctor: "ToggleAutoplay"};
-   var TickerStep = {ctor: "TickerStep"};
-   var WindowResize = function (a) {
-      return {ctor: "WindowResize"
-             ,_0: a};
-   };
-   var NextStep = function (a) {
-      return {ctor: "NextStep"
-             ,_0: a};
-   };
-   var updateModel = F2(function (action,
-   model) {
-      return function () {
-         switch (action.ctor)
-         {case "MouseClick":
-            return _U.replace([["board"
-                               ,toggle(model.board)(A2(toSquare,
-                               action._0,
-                               action._1))]],
-              model);
-            case "NextStep":
-            return action._0 ? addClick(_U.replace([["board"
-                                                    ,gameStep(model.board)]],
-              model)) : model;
-            case "Reset":
-            return resetModel(model);
-            case "SaveBoardAsInit":
-            return _U.replace([["initBoard"
-                               ,model.board]],
-              model);
-            case "TickerStep":
-            return model.autoplay ? A2(updateModel,
-              NextStep(true),
-              model) : model;
-            case "ToggleAutoplay":
-            return A2(addDebug,
-              $Basics.toString(model.autoplay),
-              _U.replace([["autoplay"
-                          ,$Basics.not(model.autoplay)]],
-              model));}
-         return model;
-      }();
-   });
-   var MouseClick = F2(function (a,
-   b) {
-      return {ctor: "MouseClick"
-             ,_0: a
-             ,_1: b};
-   });
-   var clickSignal = A3($Signal.map2,
-   F2(function (isDown,_v26) {
-      return function () {
-         switch (_v26.ctor)
-         {case "_Tuple2":
-            return isDown ? A2(MouseClick,
-              _v26._0,
-              _v26._1) : Noop;}
-         _U.badCase($moduleName,
-         "on line 92, column 45 to 84");
-      }();
-   }),
-   $Mouse.isDown,
-   $Mouse.position);
    var model$ = A2($Signal.foldp,
-   updateModel,
-   model)($Signal.mergeMany(_L.fromArray([clickSignal
+   $Update.updateModel,
+   model)($Signal.mergeMany(_L.fromArray([$Update.clickSignal
                                          ,A2($Signal.map,
-                                         function (_v30) {
+                                         function (_v0) {
                                             return function () {
-                                               switch (_v30.ctor)
+                                               switch (_v0.ctor)
                                                {case "_Tuple2":
-                                                  return WindowResize({ctor: "_Tuple2"
-                                                                      ,_0: _v30._0
-                                                                      ,_1: _v30._1});}
+                                                  return $Update.WindowResize({ctor: "_Tuple2"
+                                                                              ,_0: _v0._0
+                                                                              ,_1: _v0._1});}
                                                _U.badCase($moduleName,
-                                               "on line 103, column 32 to 50");
+                                               "on line 47, column 32 to 50");
                                             }();
                                          },
                                          $Window.dimensions)
-                                         ,$Signal.map(NextStep)($Keyboard.isDown(78))
+                                         ,$Signal.map($Update.NextStep)($Keyboard.isDown(78))
                                          ,$Signal.map(function (isDown) {
-                                            return isDown ? ToggleAutoplay : Noop;
+                                            return isDown ? $Update.ToggleAutoplay : $Update.Noop;
                                          })($Keyboard.isDown(80))
-                                         ,$Signal.map(function (_v34) {
+                                         ,$Signal.map(function (_v4) {
                                             return function () {
-                                               return TickerStep;
+                                               return $Update.TickerStep;
                                             }();
-                                         })(metronome)
-                                         ,$Signal.map(function (_v36) {
+                                         })($Update.metronome)
+                                         ,$Signal.map(function (_v6) {
                                             return function () {
-                                               return Reset;
+                                               return $Update.Reset;
                                             }();
                                          })($Keyboard.isDown(82))
-                                         ,$Signal.map(function (_v38) {
+                                         ,$Signal.map(function (_v8) {
                                             return function () {
-                                               return SaveBoardAsInit;
+                                               return $Update.SaveBoardAsInit;
                                             }();
                                          })($Keyboard.isDown(83))])));
    var main = A2($Signal.map,
    view,
    model$);
    _elm.Main.values = {_op: _op
-                      ,MouseClick: MouseClick
-                      ,NextStep: NextStep
-                      ,WindowResize: WindowResize
-                      ,TickerStep: TickerStep
-                      ,ToggleAutoplay: ToggleAutoplay
-                      ,SaveBoardAsInit: SaveBoardAsInit
-                      ,Reset: Reset
-                      ,Noop: Noop
-                      ,Model: Model
                       ,collageWidth: collageWidth
                       ,collageHeight: collageHeight
                       ,rectSize: rectSize
@@ -3851,28 +3819,9 @@ Elm.Main.make = function (_elm) {
                       ,boardHeight: boardHeight
                       ,board$: board$
                       ,model: model
-                      ,resetModel: resetModel
                       ,view: view
-                      ,addClick: addClick
-                      ,addDebug: addDebug
-                      ,updateModel: updateModel
-                      ,clickSignal: clickSignal
-                      ,metronome: metronome
                       ,model$: model$
-                      ,main: main
-                      ,toSquare: toSquare
-                      ,drawRect: drawRect
-                      ,drawRow: drawRow
-                      ,drawArray: drawArray
-                      ,background: background
-                      ,draw: draw
-                      ,arrayUpdate: arrayUpdate
-                      ,toggle: toggle
-                      ,gameStep: gameStep
-                      ,gameRule: gameRule
-                      ,livingNeighbours: livingNeighbours
-                      ,matrixGet: matrixGet
-                      ,update: update};
+                      ,main: main};
    return _elm.Main.values;
 };Elm.Maybe = Elm.Maybe || {};
 Elm.Maybe.make = function (_elm) {
@@ -3946,6 +3895,44 @@ Elm.Maybe.make = function (_elm) {
                        ,Just: Just
                        ,Nothing: Nothing};
    return _elm.Maybe.values;
+};Elm.Model = Elm.Model || {};
+Elm.Model.make = function (_elm) {
+   "use strict";
+   _elm.Model = _elm.Model || {};
+   if (_elm.Model.values)
+   return _elm.Model.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Model",
+   $Array = Elm.Array.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var Model = F8(function (a,
+   b,
+   c,
+   d,
+   e,
+   f,
+   g,
+   h) {
+      return {_: {}
+             ,autoplay: e
+             ,board: c
+             ,clicks: d
+             ,debug: f
+             ,height: h
+             ,initBoard: b
+             ,rectSize: a
+             ,width: g};
+   });
+   _elm.Model.values = {_op: _op
+                       ,Model: Model};
+   return _elm.Model.values;
 };Elm.Mouse = Elm.Mouse || {};
 Elm.Mouse.make = function (_elm) {
    "use strict";
@@ -10891,6 +10878,181 @@ Elm.Transform2D.make = function (_elm) {
                              ,scaleX: scaleX
                              ,scaleY: scaleY};
    return _elm.Transform2D.values;
+};Elm.Update = Elm.Update || {};
+Elm.Update.make = function (_elm) {
+   "use strict";
+   _elm.Update = _elm.Update || {};
+   if (_elm.Update.values)
+   return _elm.Update.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Update",
+   $Basics = Elm.Basics.make(_elm),
+   $GameLogic = Elm.GameLogic.make(_elm),
+   $Keyboard = Elm.Keyboard.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Model = Elm.Model.make(_elm),
+   $Mouse = Elm.Mouse.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $Time = Elm.Time.make(_elm);
+   var metronome = $Time.every($Time.second / 30);
+   var addDebug = F2(function (msg,
+   model) {
+      return _U.replace([["debug"
+                         ,msg]],
+      model);
+   });
+   var addClick = function (model) {
+      return _U.replace([["clicks"
+                         ,model.clicks + 1]],
+      model);
+   };
+   var resetModel = function (model) {
+      return function () {
+         var resetDebug = function (model) {
+            return _U.replace([["debug"
+                               ,""]],
+            model);
+         };
+         var resetAutoplay = function (model) {
+            return _U.replace([["autoplay"
+                               ,false]],
+            model);
+         };
+         var resetClick = function (model) {
+            return _U.replace([["clicks"
+                               ,0]],
+            model);
+         };
+         var resetBoard = function (model) {
+            return _U.replace([["board"
+                               ,model.initBoard]],
+            model);
+         };
+         return resetBoard(resetClick(model));
+      }();
+   };
+   var toSquare = F3(function (model,
+   x,
+   y) {
+      return {ctor: "_Tuple2"
+             ,_0: x / $Basics.round(model.rectSize) | 0
+             ,_1: y / $Basics.round(model.rectSize) | 0};
+   });
+   var Noop = {ctor: "Noop"};
+   var Reset = {ctor: "Reset"};
+   var SaveBoardAsInit = {ctor: "SaveBoardAsInit"};
+   var ToggleAutoplay = {ctor: "ToggleAutoplay"};
+   var TickerStep = {ctor: "TickerStep"};
+   var WindowResize = function (a) {
+      return {ctor: "WindowResize"
+             ,_0: a};
+   };
+   var NextStep = function (a) {
+      return {ctor: "NextStep"
+             ,_0: a};
+   };
+   var updateModel = F2(function (action,
+   model) {
+      return function () {
+         switch (action.ctor)
+         {case "MouseClick":
+            return function () {
+                 switch (action._2.ctor)
+                 {case "OffClick":
+                    return _U.replace([["board"
+                                       ,$GameLogic.off(model.board)(A3(toSquare,
+                                       model,
+                                       action._0,
+                                       action._1))]],
+                      model);
+                    case "OnClick":
+                    return _U.replace([["board"
+                                       ,$GameLogic.on(model.board)(A3(toSquare,
+                                       model,
+                                       action._0,
+                                       action._1))]],
+                      model);}
+                 _U.badCase($moduleName,
+                 "between lines 69 and 72");
+              }();
+            case "NextStep":
+            return action._0 ? addClick(_U.replace([["board"
+                                                    ,$GameLogic.gameStep(model.board)]],
+              model)) : model;
+            case "Reset":
+            return resetModel(model);
+            case "SaveBoardAsInit":
+            return _U.replace([["initBoard"
+                               ,model.board]],
+              model);
+            case "TickerStep":
+            return model.autoplay ? A2(updateModel,
+              NextStep(true),
+              model) : model;
+            case "ToggleAutoplay":
+            return A2(addDebug,
+              $Basics.toString(model.autoplay),
+              _U.replace([["autoplay"
+                          ,$Basics.not(model.autoplay)]],
+              model));}
+         return model;
+      }();
+   });
+   var MouseClick = F3(function (a,
+   b,
+   c) {
+      return {ctor: "MouseClick"
+             ,_0: a
+             ,_1: b
+             ,_2: c};
+   });
+   var OffClick = {ctor: "OffClick"};
+   var OnClick = {ctor: "OnClick"};
+   var clickSignal = function () {
+      var clickChecker = F3(function (isDown,
+      _v6,
+      shiftDown) {
+         return function () {
+            switch (_v6.ctor)
+            {case "_Tuple2":
+               return isDown ? A3(MouseClick,
+                 _v6._0,
+                 _v6._1,
+                 shiftDown ? OffClick : OnClick) : Noop;}
+            _U.badCase($moduleName,
+            "between lines 53 and 54");
+         }();
+      });
+      return A4($Signal.map3,
+      clickChecker,
+      $Mouse.isDown,
+      $Mouse.position,
+      $Keyboard.shift);
+   }();
+   _elm.Update.values = {_op: _op
+                        ,OnClick: OnClick
+                        ,OffClick: OffClick
+                        ,MouseClick: MouseClick
+                        ,NextStep: NextStep
+                        ,WindowResize: WindowResize
+                        ,TickerStep: TickerStep
+                        ,ToggleAutoplay: ToggleAutoplay
+                        ,SaveBoardAsInit: SaveBoardAsInit
+                        ,Reset: Reset
+                        ,Noop: Noop
+                        ,toSquare: toSquare
+                        ,resetModel: resetModel
+                        ,addClick: addClick
+                        ,addDebug: addDebug
+                        ,clickSignal: clickSignal
+                        ,metronome: metronome
+                        ,updateModel: updateModel};
+   return _elm.Update.values;
 };Elm.Window = Elm.Window || {};
 Elm.Window.make = function (_elm) {
    "use strict";
