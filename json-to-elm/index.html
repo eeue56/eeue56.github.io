@@ -16798,26 +16798,34 @@ var _eeue56$json_to_elm$Home$viewOutput = F2(
 	});
 var _eeue56$json_to_elm$Home$viewAllAliases = F4(
 	function (version, incoming, decoder, aliases) {
+		var extra = function () {
+			var _p5 = decoder;
+			if (_p5.ctor === 'English') {
+				return A2(_elm_lang$core$List$map, _eeue56$json_to_elm$TypeAlias$formatEnglishTypeAlias, aliases);
+			} else {
+				return {ctor: '[]'};
+			}
+		}();
 		var encoder = function () {
-			var _p5 = version;
-			if (_p5.ctor === 'O17') {
+			var _p6 = version;
+			if (_p6.ctor === 'O17') {
 				return _eeue56$json_to_elm$TypeAlias_O17$createEncoder;
 			} else {
 				return _eeue56$json_to_elm$TypeAlias_O18$createEncoder;
 			}
 		}();
 		var imports = function () {
-			var _p6 = decoder;
-			if (_p6.ctor === 'Pipeline') {
-				var _p7 = version;
-				if (_p7.ctor === 'O17') {
+			var _p7 = decoder;
+			if (_p7.ctor === 'Pipeline') {
+				var _p8 = version;
+				if (_p8.ctor === 'O17') {
 					return _eeue56$json_to_elm$TypeAlias_O17$pipelineImports;
 				} else {
 					return _eeue56$json_to_elm$TypeAlias_O18$pipelineImports;
 				}
 			} else {
-				var _p8 = version;
-				if (_p8.ctor === 'O17') {
+				var _p9 = version;
+				if (_p9.ctor === 'O17') {
 					return _eeue56$json_to_elm$TypeAlias_O17$originalImports;
 				} else {
 					return _eeue56$json_to_elm$TypeAlias_O18$originalImports;
@@ -16825,17 +16833,17 @@ var _eeue56$json_to_elm$Home$viewAllAliases = F4(
 			}
 		}();
 		var decoderCreator = function () {
-			var _p9 = decoder;
-			if (_p9.ctor === 'Pipeline') {
-				var _p10 = version;
-				if (_p10.ctor === 'O17') {
+			var _p10 = decoder;
+			if (_p10.ctor === 'Pipeline') {
+				var _p11 = version;
+				if (_p11.ctor === 'O17') {
 					return _eeue56$json_to_elm$TypeAlias_O17$createPipelineDecoder;
 				} else {
 					return _eeue56$json_to_elm$TypeAlias_O18$createPipelineDecoder;
 				}
 			} else {
-				var _p11 = version;
-				if (_p11.ctor === 'O17') {
+				var _p12 = version;
+				if (_p12.ctor === 'O17') {
 					return _eeue56$json_to_elm$TypeAlias_O17$createDecoder;
 				} else {
 					return _eeue56$json_to_elm$TypeAlias_O18$createDecoder;
@@ -16863,7 +16871,11 @@ var _eeue56$json_to_elm$Home$viewAllAliases = F4(
 							_1: {
 								ctor: '::',
 								_0: A2(_elm_lang$core$List$map, encoder, formattedAliases),
-								_1: {ctor: '[]'}
+								_1: {
+									ctor: '::',
+									_0: extra,
+									_1: {ctor: '[]'}
+								}
 							}
 						}
 					}
@@ -16891,48 +16903,48 @@ var _eeue56$json_to_elm$Home$viewAllDecoder = F3(
 		var alias = _eeue56$json_to_elm$TypeAlias$typeAliasFromDecoder(incoming);
 		var formattedAlias = _eeue56$json_to_elm$TypeAlias$aliasFormat(alias);
 		var originalImports = function () {
-			var _p12 = version;
-			if (_p12.ctor === 'O17') {
+			var _p13 = version;
+			if (_p13.ctor === 'O17') {
 				return _eeue56$json_to_elm$TypeAlias_O17$originalImports;
 			} else {
 				return _eeue56$json_to_elm$TypeAlias_O18$originalImports;
 			}
 		}();
 		var originalDecoder = function () {
-			var _p13 = version;
-			if (_p13.ctor === 'O17') {
+			var _p14 = version;
+			if (_p14.ctor === 'O17') {
 				return _eeue56$json_to_elm$TypeAlias_O17$createDecoder;
 			} else {
 				return _eeue56$json_to_elm$TypeAlias_O18$createDecoder;
 			}
 		}();
 		var pipeLineDecoder = function () {
-			var _p14 = version;
-			if (_p14.ctor === 'O17') {
+			var _p15 = version;
+			if (_p15.ctor === 'O17') {
 				return _eeue56$json_to_elm$TypeAlias_O17$createPipelineDecoder;
 			} else {
 				return _eeue56$json_to_elm$TypeAlias_O18$createPipelineDecoder;
 			}
 		}();
 		var pipelineImports = function () {
-			var _p15 = version;
-			if (_p15.ctor === 'O17') {
+			var _p16 = version;
+			if (_p16.ctor === 'O17') {
 				return _eeue56$json_to_elm$TypeAlias_O17$pipelineImports;
 			} else {
 				return _eeue56$json_to_elm$TypeAlias_O18$pipelineImports;
 			}
 		}();
 		var encoder = function () {
-			var _p16 = version;
-			if (_p16.ctor === 'O17') {
+			var _p17 = version;
+			if (_p17.ctor === 'O17') {
 				return _eeue56$json_to_elm$TypeAlias_O17$createEncoder;
 			} else {
 				return _eeue56$json_to_elm$TypeAlias_O18$createEncoder;
 			}
 		}();
 		var output = function () {
-			var _p17 = decoderType;
-			switch (_p17.ctor) {
+			var _p18 = decoderType;
+			switch (_p18.ctor) {
 				case 'Pipeline':
 					return A2(
 						_elm_lang$core$String$join,
@@ -17027,16 +17039,16 @@ var _eeue56$json_to_elm$Home$viewAllDecoder = F3(
 var _eeue56$json_to_elm$Home$viewTypeAliasStuff = F2(
 	function (version, incoming) {
 		var encoder = function () {
-			var _p18 = version;
-			if (_p18.ctor === 'O17') {
+			var _p19 = version;
+			if (_p19.ctor === 'O17') {
 				return _eeue56$json_to_elm$TypeAlias_O17$createEncoder(incoming);
 			} else {
 				return _eeue56$json_to_elm$TypeAlias_O18$createEncoder(incoming);
 			}
 		}();
 		var decoder = function () {
-			var _p19 = version;
-			if (_p19.ctor === 'O17') {
+			var _p20 = version;
+			if (_p20.ctor === 'O17') {
 				return _eeue56$json_to_elm$TypeAlias_O17$createDecoder(incoming);
 			} else {
 				return _eeue56$json_to_elm$TypeAlias_O18$createDecoder(incoming);
@@ -17118,9 +17130,9 @@ var _eeue56$json_to_elm$Home$viewAllUnions = function (union) {
 };
 var _eeue56$json_to_elm$Home$Input = {ctor: 'Input'};
 var _eeue56$json_to_elm$Home$Content = {ctor: 'Content'};
-var _eeue56$json_to_elm$Home$css = function (_p20) {
+var _eeue56$json_to_elm$Home$css = function (_p21) {
 	return _rtfeldman$elm_css$Css$stylesheet(
-		A2(_rtfeldman$elm_css$Css_Namespace$namespace, _eeue56$json_to_elm$Home$cssNamespace, _p20));
+		A2(_rtfeldman$elm_css$Css_Namespace$namespace, _eeue56$json_to_elm$Home$cssNamespace, _p21));
 }(
 	{
 		ctor: '::',
@@ -17294,12 +17306,12 @@ var _eeue56$json_to_elm$Home$UnionType = {ctor: 'UnionType'};
 var _eeue56$json_to_elm$Home$TypeAliasType = {ctor: 'TypeAliasType'};
 var _eeue56$json_to_elm$Home$update = F2(
 	function (action, model) {
-		var _p21 = action;
-		switch (_p21.ctor) {
+		var _p22 = action;
+		switch (_p22.ctor) {
 			case 'Noop':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'UpdateInput':
-				var trimmed = _elm_lang$core$String$trim(_p21._0);
+				var trimmed = _elm_lang$core$String$trim(_p22._0);
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -17315,7 +17327,7 @@ var _eeue56$json_to_elm$Home$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{name: _p21._0}),
+						{name: _p22._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'UpdateDecoder':
@@ -17323,7 +17335,7 @@ var _eeue56$json_to_elm$Home$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{decoderType: _p21._0}),
+						{decoderType: _p22._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
@@ -17331,7 +17343,7 @@ var _eeue56$json_to_elm$Home$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{elmVersion: _p21._0}),
+						{elmVersion: _p22._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 		}
@@ -17398,8 +17410,8 @@ var _eeue56$json_to_elm$Home$view = function (model) {
 		model.name,
 		'');
 	var mainBody = function () {
-		var _p22 = model.inputType;
-		switch (_p22.ctor) {
+		var _p23 = model.inputType;
+		switch (_p23.ctor) {
 			case 'JsonBlob':
 				return {
 					ctor: '::',
@@ -17446,8 +17458,8 @@ var _eeue56$json_to_elm$Home$view = function (model) {
 				_1: {
 					ctor: '::',
 					_0: function () {
-						var _p23 = model.inputType;
-						if (_p23.ctor === 'JsonBlob') {
+						var _p24 = model.inputType;
+						if (_p24.ctor === 'JsonBlob') {
 							return _eeue56$json_to_elm$Home$viewNameSelect(model.name);
 						} else {
 							return A2(
